@@ -1,15 +1,85 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
+# Fichiers d'application construits
+* .apk
+* .aar
+* .ap_
+* .aab
+
+# Fichiers pour la machine virtuelle ART/Dalvik
+* .dex
+
+# fichiers de classe Java
+* .classe
+
+# Fichiers générés
+poubelle /
+gen /
+sortir /
+#   Décommentez la ligne suivante au cas où vous en auriez besoin et que vous n'avez pas les fichiers de type de version de version dans votre application
+# relâcher/
+
+# fichiers Gradle
+.gradle /
+construire /
+
+# Fichier de configuration local (chemin du SDK, etc.)
+propriétés.locales
+
+# Dossier Proguard généré par Eclipse
+pro-garde /
+
+# Fichiers journaux
+* .log
+
+# Fichiers temporaires de l'éditeur Android Studio Navigation
+.navigation /
+
+# Dossier de capture d'Android Studio
+capture /
+
+#IntelliJ _
+* .iml
+.idea / workspace.xml
+.idea / tâches.xml
+.idea / gradle.xml
+.idea / assetWizardSettings.xml
+.idea / dictionnaires
+.idea / bibliothèques
+# Android Studio 3 dans le fichier .gitignore.
+.idée / caches
+.idea / modules.xml
+# Commentez la ligne suivante si le maintien de la position des éléments dans l'éditeur de navigation est pertinent pour vous
+.idea / navEditor.xml
+
+# fichiers de magasin de clés
+# Décommentez les lignes suivantes si vous ne souhaitez pas archiver vos fichiers keystore.
+# *.jks
+# *.keystore
+
+# Dossier de construction natif externe généré dans Android Studio 2.2 et versions ultérieures
 .externalNativeBuild
-.cxx
-local.properties
+.cxx /
+
+# Services Google (par exemple API ou Firebase)
+# google-services.json
+
+# Freeline
+freeline.py
+ligne gratuite /
+freeline_project_description.json
+
+# voie rapide
+fastlane / rapport.xml
+fastlane / Aperçu.html
+voie rapide / captures d'écran
+voie rapide / test_output
+voie rapide / readme.md
+
+# Contrôle des versions
+vcs.xml
+
+# peluches
+peluches / intermédiaires /
+charpie / généré /
+peluches / sorties /
+charpie / tmp /
+# peluches/rapports/
