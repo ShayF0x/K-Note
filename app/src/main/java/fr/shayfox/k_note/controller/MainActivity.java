@@ -3,6 +3,8 @@ package fr.shayfox.k_note.controller;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -38,6 +40,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,6 +48,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -76,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         INSTANCE = this;
         Thread.setDefaultUncaughtExceptionHandler(new ExeptionHandlerPrint());
+
+        checkUpdate();
 
         mAppManager = new AppManager(getApplicationContext());
         mNoteAdapter = new NoteAdapter(mAppManager.getNoteList(), this);
@@ -285,6 +293,42 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    private void checkUpdate() {
+//        PackageManager manager = getApplicationContext().getPackageManager();
+//        PackageInfo info;
+//        try {
+//            info = manager.getPackageInfo(
+//                    getApplicationContext().getPackageName(), 0);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        String version = info.versionName;
+//
+//        System.out.println("Version: "+version);
+//
+//        try {
+//            System.out.println("connection");
+//            final HttpURLConnection connection = (HttpURLConnection) new URL("https://api.github.com/repos/ShayF0x/K-Note/releases/latest").openConnection();
+//            //connection.setRequestProperty("User-Agent", USER_AGENT);
+//            connection.connect();
+//
+//            if (connection.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+//                System.out.println("error");
+//                return;
+//            }
+//
+//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF8")))) {
+//                System.out.println(reader);
+//            } catch (JsonSyntaxException | NumberFormatException ex) {
+//                System.out.println("Failed to parse the latest version info.");
+//                ex.printStackTrace();
+//            }
+//        } catch (IOException ex) {
+//            System.out.println("LOG: Failed to get release info from api.github.com.");
+//            ex.printStackTrace();
+//        }
     }
 
     @Override
