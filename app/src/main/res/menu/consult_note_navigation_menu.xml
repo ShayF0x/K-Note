@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/consult_note_navigation_info"
+        android:icon="@drawable/ic_info"
+        android:iconTint="@color/primary_font"
+        android:title="@string/consult_note_navigation_info_item"/>
+    <item
+        android:id="@+id/consult_note_navigation_preparation"
+        android:icon="@drawable/ic_preparation"
+        android:iconTint="@color/primary_font"
+        android:title="@string/consult_note_navigation_preparation_item"/>
+    <item
+        android:id="@+id/consult_note_navigation_resources"
+        android:icon="@drawable/ic_ingredients"
+        android:iconTint="@color/primary_font"
+        android:title="@string/consult_note_navigation_resources_item"/>
+</menu>

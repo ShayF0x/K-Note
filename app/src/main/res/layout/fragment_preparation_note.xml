@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    tools:context=".controller.fragments.PreparationNoteFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preparation_label"
+            android:textSize="18sp"
+            android:textColor="@color/secondary_font"/>
+
+        <TextView
+            android:id="@+id/preparation_note_fragment_preparation_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_font"
+            android:textSize="14sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

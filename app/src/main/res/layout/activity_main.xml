@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_font"
+    tools:context=".controller.MainActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_layout"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.KNote.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/primary"
+                app:navigationIcon="@drawable/ic_hamburger_menu"
+                app:navigationIconTint="@color/primary_font"
+                app:popupTheme="@style/Theme.KNote.PopupOverlay">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:background="#00FFFFFF"
+                    app:boxStrokeWidth="0dp"
+                    app:endIconTint="@color/primary_font"
+                    android:layout_height="wrap_content">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00FFFFFF"
+                        android:fontFamily="@font/kanit_regular"
+                        android:textColor="@color/primary_font"
+                        android:inputType="none"
+                        android:text="@string/all"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:id="@+id/nav_view"
+            app:headerLayout="@layout/nav_header"
+            android:background="@color/secondary"
+            app:itemIconTint="@color/secondary_font"
+            app:itemTextColor="@color/secondary_font"
+            app:menu="@menu/drawer_hamburger_menu"/>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_note_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        app:tint="@color/primary_font"
+        app:backgroundTint="@color/primary"
+        app:srcCompat="@drawable/ic_add_note" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

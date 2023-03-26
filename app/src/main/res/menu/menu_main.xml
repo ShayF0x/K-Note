@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fr.shayfox.k_note.controller.MainActivity">
+    <item
+        android:id="@+id/action_information"
+        android:orderInCategory="100"
+        android:title="@string/action_information"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_import"
+        android:orderInCategory="100"
+        android:title= "@string/action_import_note"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_changeMode"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_blocs"
+        android:title="@string/action_changeMode"
+        app:showAsAction="always" />
+</menu>

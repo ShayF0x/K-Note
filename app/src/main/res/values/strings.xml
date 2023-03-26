@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">K-Note</string>
+    <string name="app_author">ShayFox</string>
+    <string name="recipe_name">Nom de la recette</string>
+    <string name="recipe_edit_no_text">…</string>
+    <string name="action_information">À propos</string>
+    <string name="action_changeMode">ChangeMode</string>
+    <string name="action_import_note">Importer une recette</string>
+    <string name="nav_open">NavOpen</string>
+    <string name="nav_close">NavClose</string>
+
+    <string name="all">Tout</string>
+
+    <string name="time_picker_seconds">Secondes</string>
+    <string name="time_picker_minutes">Minutes</string>
+    <string name="time_picker_hours">Heures</string>
+
+    <string name="cooking_tools_label">Ustensils</string>
+    <string name="ingredient_label">Ingrédients</string>
+    <string name="preparation_label">Préparation</string>
+    <string name="details_label">Précisions</string>
+    <string name="quantity_people_label">Quantité (en personnes):</string>
+    <string name="tags_label">Tags</string>
+    <string name="description_label">Description</string>
+
+    <string name="time_total_label">Total: </string>
+    <string name="time_wait_label">Temp de Repos: </string>
+    <string name="time_cook_label">Temp de Cuisson: </string>
+    <string name="time_preparation_label">Temp de Préparation: </string>
+
+    <string name="recipe_name_null">Aucun Nom de recette</string>
+    <string name="recipe_name_unknown">Nom de la recette</string>
+
+    <string name="ingredient_name_unknown">Nom de l\'ingrédient</string>
+
+    <string name="default_ingredient_measure">mg</string>
+    <string name="default_ingredient_value">100</string>
+
+    <string name="drawer_menu_manage_tags">Gérer les tags</string>
+    <string name="drawer_menu_create_tags">Créer un nouveau tag</string>
+
+    <string name="create_note_menu_save">Save</string>
+
+    <string name="consult_note_menu_download">Télécharger</string>
+    <string name="consult_note_menu_edit">Editer</string>
+    <string name="consult_note_menu_export">Exporter</string>
+
+    <string name="consult_note_navigation_info_item">Infos</string>
+    <string name="consult_note_navigation_resources_item">Ressources</string>
+    <string name="consult_note_navigation_preparation_item">Préparation</string>
+
+    <string name="author_label">Auteur</string>
+    <string name="license_label">License</string>
+    <string name="version_label">Version</string>
+    <string name="license_value">Utilisateur Normal</string>
+
+</resources>

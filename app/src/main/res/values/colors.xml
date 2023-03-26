@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="black">#FF000000</color>
+
+    <color name="primary">#FFE566</color>
+    <color name="secondary">#3d405b</color>
+    <color name="primary_font">#191a25</color>
+    <color name="secondary_font">#f8f7ff</color>
+    <color name="gray">#45464c</color>
+
+    <color name="primary_cursor">#5BFFE566</color>
+
+    <color name="dialog_choose_icon_color">@color/secondary_font</color>
+    <color name="dialog_choose_text_color">@color/secondary_font</color>
+
+    <!--uCrop Activity-->
+    <color name="ucrop_color_active_controls_color">@color/primary</color>
+    <color name="ucrop_color_inactive_controls_color">@color/secondary_font</color>
+    <color name="ucrop_color_widget_rotate_mid_line">@color/secondary_font</color>
+    <color name="ucrop_color_active_aspect_ratio">@color/secondary_font</color>
+    <color name="ucrop_color_widget_text">@color/secondary_font</color>
+    <color name="ucrop_color_widget_background">@color/primary_font</color>
+</resources>

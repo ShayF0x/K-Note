@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+    <!-- La couleur de fond, de préférence la même que votre thème normal -->
+    <item android:drawable="@color/primary" android:maxLevel="1" />
+    <!-- Le logo de votre produit - Version couleur 144dp de l'icône de votre application -->
+    <item>
+        <bitmap android:src="@drawable/launcher_icon" android:gravity="center" android:tint="@color/primary_font"/>
+    </item>
+</layer-list>

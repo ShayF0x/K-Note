@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secondary"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    tools:context=".controller.fragments.InfoNoteFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/info_note_fragment_description_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/secondary_font"
+            android:textSize="10sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/info_note_fragment_time_linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/info_note_fragment_description_textview">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_preparation_label"
+                        android:layout_marginRight="4dp"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/info_note_fragment_preparationtime_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_cook_label"
+                        android:layout_marginRight="4dp"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/info_note_fragment_cooktime_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_wait_label"
+                        android:layout_marginRight="4dp"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/info_note_fragment_waittime_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_total_label"
+                        android:layout_marginRight="4dp"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/info_note_fragment_totaltime_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/secondary_font"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/info_note_fragment_time_linearlayout"
+            app:layout_constraintTop_toBottomOf="@id/info_note_fragment_description_textview">
+
+            <ImageView
+                android:id="@+id/info_note_fragment_peoples_imageview"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/ic_peoples"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/secondary_font" />
+
+            <TextView
+                android:id="@+id/info_note_fragment_peoples_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/secondary_font"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/info_note_fragment_peoples_imageview" />
+
+            <ImageView
+                android:id="@+id/info_note_fragment_add_imageview"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_add_box"
+                android:layout_marginLeft="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_note_fragment_peoples_imageview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#468F3A" />
+
+            <ImageView
+                android:id="@+id/info_note_fragment_remove_imageview"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_remove_box"
+                android:layout_marginLeft="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_note_fragment_peoples_imageview"
+                app:layout_constraintTop_toBottomOf="@id/info_note_fragment_add_imageview"
+                app:tint="#BB0000" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#40000000"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/details_label"
+            android:textColor="@color/secondary_font"/>
+
+        <TextView
+            android:id="@+id/info_note_fragment_details_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_font"
+            android:textSize="10sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
+</LinearLayout>

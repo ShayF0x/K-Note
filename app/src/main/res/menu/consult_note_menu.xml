@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fr.shayfox.k_note.controller.ConsultNoteActivity">
+
+    <item android:id="@+id/consult_note_menu_edit"
+        app:showAsAction="never"
+        android:title="@string/consult_note_menu_edit" />
+    <item android:id="@+id/consult_note_menu_export"
+        app:showAsAction="never"
+        android:title="@string/consult_note_menu_export" />
+    <item android:id="@+id/consult_note_menu_download"
+        app:showAsAction="never"
+        android:title="@string/consult_note_menu_download" />
+</menu>
