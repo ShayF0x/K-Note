@@ -11,5 +11,5 @@ K-Note est une application android téléchargable depuis github qui vous permet
 <br>
 
 ###  Licence
-    [ GPL-3.0 ](https://choosealicense.com/licenses/gpl-3.0/)
+[ GPL-3.0 ](https://choosealicense.com/licenses/gpl-3.0/]
 <p align="right">(<a href="#top">retour en haut</a>)</p>
