@@ -178,6 +178,13 @@ public class AppManager {
     public boolean hasNote(Note note){
         return mNoteList.contains(note);
     }
+    public boolean hasNote(String str){
+        for (Note note:mNoteList) {
+            if(note.getName() == str)
+                return true;
+        }
+        return false;
+    }
     public boolean hasNote(UUID uuid){
         for (Note note:mNoteList) {
             if(note.getUUID() == uuid)

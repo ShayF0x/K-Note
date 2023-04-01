@@ -1,8 +1,11 @@
 package fr.shayfox.k_note.controller;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,6 +13,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
@@ -19,15 +24,17 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -40,26 +47,26 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import fr.shayfox.k_note.BuildConfig;
 import fr.shayfox.k_note.R;
 import fr.shayfox.k_note.adapter.NoteAdapter;
 import fr.shayfox.k_note.databinding.ActivityMainBinding;
 import fr.shayfox.k_note.manager.AppManager;
 import fr.shayfox.k_note.manager.ExeptionHandlerPrint;
+import fr.shayfox.k_note.manager.Response;
 import fr.shayfox.k_note.manager.SwipeToDeleteCallback;
 import fr.shayfox.k_note.model.Note;
 import fr.shayfox.k_note.model.Tag;
@@ -83,7 +90,15 @@ public class MainActivity extends AppCompatActivity {
         INSTANCE = this;
         Thread.setDefaultUncaughtExceptionHandler(new ExeptionHandlerPrint());
 
-        checkUpdate();
+        if(!canReadWriteExternal()){
+            requestPermission();
+        }
+
+        try {
+            checkUpdate();
+        } catch (IOException | ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         mAppManager = new AppManager(getApplicationContext());
         mNoteAdapter = new NoteAdapter(mAppManager.getNoteList(), this);
@@ -295,40 +310,101 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void checkUpdate() {
-//        PackageManager manager = getApplicationContext().getPackageManager();
-//        PackageInfo info;
-//        try {
-//            info = manager.getPackageInfo(
-//                    getApplicationContext().getPackageName(), 0);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String version = info.versionName;
-//
-//        System.out.println("Version: "+version);
-//
-//        try {
-//            System.out.println("connection");
-//            final HttpURLConnection connection = (HttpURLConnection) new URL("https://api.github.com/repos/ShayF0x/K-Note/releases/latest").openConnection();
-//            //connection.setRequestProperty("User-Agent", USER_AGENT);
-//            connection.connect();
-//
-//            if (connection.getResponseCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-//                System.out.println("error");
-//                return;
-//            }
-//
-//            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF8")))) {
-//                System.out.println(reader);
-//            } catch (JsonSyntaxException | NumberFormatException ex) {
-//                System.out.println("Failed to parse the latest version info.");
-//                ex.printStackTrace();
-//            }
-//        } catch (IOException ex) {
-//            System.out.println("LOG: Failed to get release info from api.github.com.");
-//            ex.printStackTrace();
-//        }
+    private void checkUpdate() throws IOException, ExecutionException, InterruptedException {
+        PackageManager manager = getApplicationContext().getPackageManager();
+        PackageInfo info;
+        try {
+            info = manager.getPackageInfo(
+                    getApplicationContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String version = info.versionName;
+
+        String response = getResponse("https://api.github.com/repos/ShayF0x/K-Note/releases/latest");
+        Gson gson = new Gson();
+        String version_latest = gson.fromJson(response, JsonObject.class).get("tag_name").getAsString();
+
+        String[] test = new String[]{"1"+version.replaceAll("\\.", ""), "1"+version_latest.replaceAll("\\.", "")};
+        if(isInteger(test[0]) && isInteger(test[1])){
+            if(Integer.parseInt(test[1])>Integer.parseInt(test[0])){
+                String link = gson.fromJson(response, JsonObject.class).get("assets").getAsJsonArray().get(0).getAsJsonObject().get("browser_download_url").getAsString();
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this, R.style.PopupDialogTheme);
+
+                alertDialogBuilder.setMessage("Une mise à jour est disponible voulez-vous l'installer ? (version actuelle: "+version+", nouvelle version: "+version_latest+")");
+
+                // set dialog message
+                alertDialogBuilder.setCancelable(false).setPositiveButton("Oui", (dialog, id) -> {
+
+                    DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                    Uri uri = Uri.parse(link);
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                    File file = new File(getExternalFilesDir(null), "Download"+File.separator+"AppUpdate.apk");
+                    if(file.exists())file.delete();
+                    Uri fileUri  = (!file.getAbsolutePath().endsWith(".apk") && Build.VERSION.SDK_INT>=Build.VERSION_CODES.N) ?
+                            FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", file) :
+                            Uri.fromFile(file);
+
+                    request.setDestinationUri(fileUri);
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                    downloadManager.enqueue(request);
+
+                    IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+                    BroadcastReceiver receiver = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            // App already have the permission to install so launch the APK installation.
+                            Intent intentUpdate;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                Uri apkUri = FileProvider.getUriForFile(MainActivity.this, BuildConfig.APPLICATION_ID + ".provider", file);
+                                intentUpdate = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                                intentUpdate.setData(apkUri);
+                                intentUpdate.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            } else {
+                                Uri apkUri = Uri.fromFile(file);
+                                intentUpdate = new Intent(Intent.ACTION_VIEW);
+                                intentUpdate.setDataAndType(apkUri, "application/vnd.android.package-archive");
+                                intentUpdate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+
+
+
+                            context.startActivity(intentUpdate);
+
+                            finish();
+                        }
+                    };
+                    registerReceiver(receiver, filter);
+
+                }).setNegativeButton("Non", null);
+
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                // show it
+                alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.secondary_font));
+                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.secondary_font));
+            }
+        }
+
+    }
+
+    private String getResponse(String src) throws ExecutionException, InterruptedException {
+        AsyncTask<String, Void, Response> async = new getResponseTask().execute(src);
+        return async.get().get_content();
+    }
+
+    public boolean isInteger(String str){
+        try{
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
     }
 
     @Override
@@ -546,5 +622,54 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateListNote() {
         mNoteAdapter.notifyDataSetChanged();
+    }
+
+    private final int REQUEST_WRITE_PERMISSION = 786;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
+    }
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            requestPermissions(new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+    }
+
+    private boolean canReadWriteExternal() {
+        return !(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED);
+    }
+
+    static class getResponseTask extends AsyncTask<String, Void, Response> {
+
+        protected Response doInBackground(String... urls) {
+            StringBuilder stringBuilder = new StringBuilder();
+            try {
+                for (String link:urls) {
+                    URL url = null;
+
+                    url = new URL(link);
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    if (conn.getResponseCode() != 200) {
+                        return new Response(conn.getResponseMessage(), conn.getResponseCode());
+                    }
+                    InputStreamReader in = new InputStreamReader(conn.getInputStream());
+                    BufferedReader br = new BufferedReader(in);
+                    String output;
+                    while ((output = br.readLine()) != null) {
+                        return new Response(output, conn.getResponseCode());
+                    }
+                    conn.disconnect();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return new Response(null, 0);
+        }
     }
 }

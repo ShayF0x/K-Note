@@ -146,7 +146,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
 
                         FileUtils.copy(file, tempFile);
 
-                        Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + "." + getLocalClassName() + ".provider", tempFile);
+                        Uri uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", tempFile);
                         Intent shareIntent = new Intent();
                         shareIntent.setAction(Intent.ACTION_SEND);
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);

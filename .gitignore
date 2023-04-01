@@ -83,3 +83,6 @@ charpie / généré /
 peluches / sorties /
 charpie / tmp /
 # peluches/rapports/
+/app/src/androidTest/java/fr/shayfox/k_note/
+/app/src/test/java/fr/shayfox/k_note/
+/.idea/

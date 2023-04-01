@@ -52,6 +52,9 @@
     <string name="author_label">Auteur</string>
     <string name="license_label">License</string>
     <string name="version_label">Version</string>
-    <string name="license_value">Utilisateur Normal</string>
+    <string name="bug_label">Communication développement</string>
+    <string name="bug_value">Pour tous bugs ou toutes suggestions, merci de le communiquer sur github</string>
+    <string name="changelog_label">Notes de version</string>
+    <string name="license_value">GPL-3.0</string>
 
 </resources>

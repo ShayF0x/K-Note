@@ -121,31 +121,31 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
             notifyDataSetChanged();
         });
 
-        viewHolder.getImageView().setOnLongClickListener(view -> {
-            if(itemMode != 1)return false;
-
-            final int position1 = viewHolder.getAdapterPosition();
-            final Note note12 = mMainActivity.mAppManager.getNoteList().get(position1);
-            AtomicBoolean restore = new AtomicBoolean(false);
-
-            mMainActivity.mAppManager.removeNote(note12);
-            notifyItemRemoved(position1);
-            mMainActivity.updateListTagNote(mMainActivity.binding.autoCompleteTextView.getText().toString());
-
-            Snackbar snackbar = Snackbar
-                    .make(mMainActivity.binding.coordinatorLayout, "La recette "+ note12.getName()+" va être supprimée definitivement !", Snackbar.LENGTH_LONG);
-            snackbar.setAction("Annuler", v -> {
-                restore.set(true);
-                mMainActivity.mAppManager.addNote(note12);
-                notifyItemInserted(position1);
-                mMainActivity.updateListTagNote(mMainActivity.binding.autoCompleteTextView.getText().toString());
-            });
-
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
-
-            return false;
-        });
+//        viewHolder.getImageView().setOnLongClickListener(view -> {
+//            if(itemMode != 1)return false;
+//
+//            final int position1 = viewHolder.getAdapterPosition();
+//            final Note note12 = mMainActivity.mAppManager.getNoteList().get(position1);
+//            AtomicBoolean restore = new AtomicBoolean(false);
+//
+//            mMainActivity.mAppManager.removeNote(note12);
+//            notifyItemRemoved(position1);
+//            mMainActivity.updateListTagNote(mMainActivity.binding.autoCompleteTextView.getText().toString());
+//
+//            Snackbar snackbar = Snackbar
+//                    .make(mMainActivity.binding.coordinatorLayout, "La recette "+ note12.getName()+" va être supprimée definitivement !", Snackbar.LENGTH_LONG);
+//            snackbar.setAction("Annuler", v -> {
+//                restore.set(true);
+//                mMainActivity.mAppManager.addNote(note12);
+//                notifyItemInserted(position1);
+//                mMainActivity.updateListTagNote(mMainActivity.binding.autoCompleteTextView.getText().toString());
+//            });
+//
+//            snackbar.setActionTextColor(Color.YELLOW);
+//            snackbar.show();
+//
+//            return false;
+//        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

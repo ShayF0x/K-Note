@@ -48,6 +48,8 @@ public class FileUtils {
         //This point and below is responsible for the write operation
         FileOutputStream outputStream;
         try {
+            if (!file.getParentFile().exists())
+                file.getParentFile().mkdirs();
             file.createNewFile();
             //second argument of FileOutputStream constructor indicates whether
             //to append or create new file if one exists
