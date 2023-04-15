@@ -7,7 +7,7 @@
 </p>
 
 ### Qu'est ce que ?
-K-Note est une application android téléchargable depuis github qui vous permet de stocker, trier et créer des notes de cuisines complètes. Ajouter le nom, les etiquettes, une image, les ingrédients, les consignes de préparations, le materiel, le temps demandé ... dans l'application elle même et consulté ou partagez les avec qui vous voulez par un simple fichier json.
+K-Note est une application android téléchargable depuis github qui vous permet de stocker, trier et créer des notes de cuisines complètes. Ajouter le nom, les etiquettes, une image, les ingrédients, les consignes de préparations, le materiel, le temps demandé... dans l'application elle même et consultez ou partagez les avec qui vous voulez.
 
 <br>
 
