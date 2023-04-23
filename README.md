@@ -4,7 +4,7 @@
 <p align="center">
     <img src="https://img.shields.io/badge/build-Ready%20to%20go-brightgreen"/>
     <img src="https://img.shields.io/badge/dynamic/json?color=blue&label=Version&query=version&url=https%3A%2F%2Fraw.githubusercontent.com%2FShayF0x%2FK-Note%2Fmaster%2Fk-note.json "/>
-    <img src"https://img.shields.io/github/downloads/ShayF0x/K-Note/total.svg" />
+    <img src="https://img.shields.io/github/downloads/ShayF0x/K-Note/total.svg"/>
 </p>
 
 ### Qu'est ce que ?
