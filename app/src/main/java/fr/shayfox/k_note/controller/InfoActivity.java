@@ -84,16 +84,16 @@ public class InfoActivity extends AppCompatActivity {
             Response response = null;
             try {
                 response = getResponse("https://api.github.com/repos/ShayF0x/K-Note/releases/tags/"+version);
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
             String message = "La mise à jour ne contient pas de note";
             if(response != null){
-                if(response.get_code() == 404){
+                if(response.get_code() == 404) {
                     message = "Votre version n'est pas officielle";
+                }else if (response.get_code() == 452){
+                    message = "Vous n'avez pas de connection internet";
                 }else if (response.get_code() == 200){
                     Gson gson = new Gson();
                     message = gson.fromJson(response.get_content(), JsonObject.class).get("body").getAsString();
@@ -143,7 +143,7 @@ public class InfoActivity extends AppCompatActivity {
                         2,
                         new ArrayList<>(Arrays.asList(
                                 new Ingredient("Sel", 1, "pincée"),
-                                new Ingredient("oeufs", 4, null),
+                                new Ingredient("oeufs", 4, ""),
                                 new Ingredient("lait", 20, Ingredient.Measure.CENTILITRE),
                                 new Ingredient("gruyère", 30, Ingredient.Measure.GRAMME)
                         )),

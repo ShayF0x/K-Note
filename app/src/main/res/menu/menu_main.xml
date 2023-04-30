@@ -8,6 +8,11 @@
         android:title="@string/action_information"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_wiki"
+        android:orderInCategory="100"
+        android:title="@string/action_wiki"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_import"
         android:orderInCategory="100"
         android:title= "@string/action_import_note"

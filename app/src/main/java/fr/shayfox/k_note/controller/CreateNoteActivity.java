@@ -223,7 +223,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 mBorderDescriptionView.setBackgroundResource(R.color.primary);
             }else{
                 mBorderDescriptionView.setBackgroundResource(R.color.secondary_font);
-                if(mDescriptionEditText.getText().toString() != null && !mDescriptionEditText.getText().toString().isEmpty()) {
+                if(mDescriptionEditText.getText().toString() != null) {
                     mNote.setDescription(mDescriptionEditText.getText().toString());
                 }
             }
@@ -233,7 +233,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 mBorderQuantityView.setBackgroundResource(R.color.primary);
             }else{
                 mBorderQuantityView.setBackgroundResource(R.color.secondary_font);
-                if(mQuantityEditText.getText().toString() != null && !mQuantityEditText.getText().toString().isEmpty()) {
+                if(mQuantityEditText.getText().toString() != null && !mQuantityEditText.getText().toString().equalsIgnoreCase("0")) {
                     mNote.setQuantity(Integer.parseInt(mQuantityEditText.getText().toString()));
                 }
             }
@@ -243,7 +243,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 mBorderPreparationView.setBackgroundResource(R.color.primary);
             }else{
                 mBorderPreparationView.setBackgroundResource(R.color.secondary_font);
-                if(mPreparationEditText.getText().toString() != null && !mPreparationEditText.getText().toString().isEmpty()) {
+                if(mPreparationEditText.getText().toString() != null) {
                     mNote.setPreparationText(mPreparationEditText.getText().toString());
                 }
             }
@@ -253,7 +253,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 mBorderPrecisionsView.setBackgroundResource(R.color.primary);
             }else{
                 mBorderPrecisionsView.setBackgroundResource(R.color.secondary_font);
-                if(mPrecisionEditText.getText().toString() != null && !mPrecisionEditText.getText().toString().isEmpty()) {
+                if(mPrecisionEditText.getText().toString() != null) {
                     mNote.setDetails(mPrecisionEditText.getText().toString());
                 }
             }
@@ -509,6 +509,9 @@ public class CreateNoteActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.create_note_menu_check: {//this item has your app icon
+
+
+
                 FileUtils.writeFileExternalStorage("Notes"+File.separator+mNote.getUUID()+".json", gson.toJson(mNote), true);
                 try {
                     mAppManager.updateTagFile();

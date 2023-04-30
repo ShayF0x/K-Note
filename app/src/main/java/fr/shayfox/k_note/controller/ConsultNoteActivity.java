@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
     private PreparationNoteFragment mPreparationNoteFragment;
 
     private int mQuantity;
+    private boolean isPaused = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
 
         mPictureImageView = findViewById(R.id.consult_note_activity_picture);
 
-        mNameTextView = findViewById(R.id.consult_note_activity_edittext_name);
+        mNameTextView = findViewById(R.id.consult_note_activity_text_name);
 
         mToolbar = findViewById(R.id.consult_note_activity_toolbar);
 
@@ -107,11 +109,29 @@ public class ConsultNoteActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.consult_note_navigation_info:
                     getSupportFragmentManager().beginTransaction().replace(R.id.consult_note_activity_fragment_container, mInfoNoteFragment).commit();
-                    mInfoNoteFragment.setQuantity(mQuantity);
+                    Handler h = new Handler();
+                    //later to update UI
+                    h.post(() -> {
+                        while(mInfoNoteFragment.getContext() == null){
+
+                        }
+                        if(mInfoNoteFragment.getContext() != null) {
+                            mInfoNoteFragment.setQuantity(mQuantity);
+                        }
+                    });
                     return true;
                 case R.id.consult_note_navigation_resources:
                     getSupportFragmentManager().beginTransaction().replace(R.id.consult_note_activity_fragment_container, mResourcesNoteFragment).commit();
-                    mResourcesNoteFragment.setQuantity(mQuantity);
+                    h = new Handler();
+                    //later to update UI
+                    h.post(() -> {
+                        while(mResourcesNoteFragment.getContext() == null){
+
+                        }
+                        if(mResourcesNoteFragment.getContext() != null) {
+                            mResourcesNoteFragment.setQuantity(mQuantity);
+                        }
+                    });
                     return true;
                 case R.id.consult_note_navigation_preparation:
                     getSupportFragmentManager().beginTransaction().replace(R.id.consult_note_activity_fragment_container, mPreparationNoteFragment).commit();
@@ -142,7 +162,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
                     try {
                         File file = new File(getExternalFilesDir(null), "Notes"+File.separator+mNote.getUUID()+".json");
 
-                        File tempFile = File.createTempFile(mNote.getName(),".json");
+                        File tempFile = File.createTempFile(mNote.getName(),".knoterecipe");
 
                         FileUtils.copy(file, tempFile);
 
@@ -150,7 +170,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
                         Intent shareIntent = new Intent();
                         shareIntent.setAction(Intent.ACTION_SEND);
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                        shareIntent.setType("*/json");
+                        shareIntent.setType("*/*");
                         startActivity(Intent.createChooser(shareIntent, null));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -161,7 +181,7 @@ public class ConsultNoteActivity extends AppCompatActivity {
                     if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         File file = new File(getExternalFilesDir(null), "Notes" + File.separator + mNote.getUUID() + ".json");
 
-                        File destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Recettes" + File.separator + mNote.getName() + ".json");
+                        File destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Recettes" + File.separator + mNote.getName() + ".knoterecipe");
                         System.out.println(destFile.getAbsolutePath());
 
                     try {
@@ -213,7 +233,21 @@ public class ConsultNoteActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPaused = true;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isPaused)return;
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

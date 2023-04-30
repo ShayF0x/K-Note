@@ -108,6 +108,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder>{
         viewHolder.getIcon().setImageResource(note.isLiked() ? R.drawable.ic_like:R.drawable.ic_unlike);
         if(note.getImage() != null) {
             viewHolder.getImageView().setImageBitmap(note.getImage());
+        }else{
+            viewHolder.getImageView().setImageResource(R.mipmap.ic_launcher);
         }
 
         viewHolder.getIcon().setOnClickListener(view -> {

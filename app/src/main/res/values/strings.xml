@@ -4,6 +4,7 @@
     <string name="recipe_name">Nom de la recette</string>
     <string name="recipe_edit_no_text">…</string>
     <string name="action_information">À propos</string>
+    <string name="action_wiki">Wiki</string>
     <string name="action_changeMode">ChangeMode</string>
     <string name="action_import_note">Importer une recette</string>
     <string name="nav_open">NavOpen</string>

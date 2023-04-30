@@ -28,16 +28,14 @@
                 app:navigationIconTint="@color/primary_font"
                 app:popupTheme="@style/Theme.KNote.PopupOverlay">
 
-                <EditText android:id="@+id/consult_note_activity_edittext_name"
+                <TextView android:id="@+id/consult_note_activity_text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#00FFFFFF"
+                    android:textSize="18sp"
                     android:gravity="left"
                     android:hint="@string/recipe_name"
-                    android:inputType="text"
                     android:textColor="@color/primary_font"
-                    android:textColorHint="@color/primary_font"
-                    android:importantForAutofill="no" />
+                    android:textColorHint="@color/primary_font"/>
 
             </com.google.android.material.appbar.MaterialToolbar>
 

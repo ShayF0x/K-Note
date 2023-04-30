@@ -62,8 +62,10 @@ public class Note {
         this(name, description, image, tags, preparationTime, cookTime, waitTime, quantity, ingredients, preparationText, cookingTools, details, UUID.randomUUID());
     }
 
-    public Note(UUID uuid){
+    public Note(UUID uuid, String name){
         liked = false;
+        mQuantity = 1;
+        mName = name;
         mPreparationTime = new int[3];
         mCookTime = new int[3];
         mWaitTime = new int[3];
@@ -73,8 +75,20 @@ public class Note {
         mUUID = uuid;
     }
 
-    public Note() {
-        this(UUID.randomUUID());
+    public Note(UUID uuid) {
+        liked = false;
+        mQuantity = 1;
+        mPreparationTime = new int[3];
+        mCookTime = new int[3];
+        mWaitTime = new int[3];
+        mTags = new ArrayList<>();
+        mIngredients = new ArrayList<>();
+        mCookingTools = new ArrayList<>();
+        mUUID = uuid;
+    }
+
+    public Note(String name) {
+        this(UUID.randomUUID(), name);
     }
 
     public String getName() {

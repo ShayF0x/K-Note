@@ -8,10 +8,13 @@
     <color name="primary">#FFE566</color>
     <color name="secondary">#3d405b</color>
     <color name="primary_font">#191a25</color>
+    <color name="primary_font__transparent">#B0191a25</color>
     <color name="secondary_font">#f8f7ff</color>
+    <color name="secondary_font__transparent">#B0F8F7FF</color>
     <color name="gray">#45464c</color>
 
     <color name="primary_cursor">#5BFFE566</color>
+    <color name="secondary_cursor">#5B191a25</color>
 
     <color name="dialog_choose_icon_color">@color/secondary_font</color>
     <color name="dialog_choose_text_color">@color/secondary_font</color>

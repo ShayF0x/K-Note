@@ -79,6 +79,7 @@ public class ResourcesNoteFragment extends Fragment {
             mQuantityTextView.setText(String.format("%s (%s)", mQuantity, mNote.getQuantity()));
         }
         if(mIngredientsListView != null){
+            System.out.printf("context: %s,mNote: %s, mQuantity: %s", getContext(), mNote, mQuantity);
             mIngredientsListView.setAdapter(new IngredientConsultAdapter(getContext(), mNote, mQuantity));
         }
     }

@@ -30,12 +30,17 @@
                     android:id="@+id/create_note_activity_edittext_name"
                     android:textColor="@color/primary_font"
                     android:backgroundTint="#00FFFFFF"
+                    android:textSelectHandleRight="@drawable/ic_cursor_second"
+                    android:textSelectHandle="@drawable/ic_cursor_second"
+                    android:textSelectHandleLeft="@drawable/ic_cursor_second"
+                    android:textCursorDrawable="@null"
+                    android:textColorHighlight="@color/secondary_cursor"
                     android:inputType="text"
                     android:gravity="left"
-                    android:textColorHint="@color/primary_font"
+                    android:textColorHint="@color/primary_font__transparent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/recipe_name"
+                    android:hint="@string/recipe_edit_no_text"
                     android:importantForAutofill="no" />
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>

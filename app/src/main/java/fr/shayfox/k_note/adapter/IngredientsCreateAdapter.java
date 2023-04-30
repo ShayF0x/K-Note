@@ -89,20 +89,25 @@ public class IngredientsCreateAdapter extends RecyclerView.Adapter<IngredientsCr
         // contents of the view with that element
         final Ingredient ingredient = listIngredients.get(position);
 
+        //Ingredient Name
         if(ingredient.getName() != null && !ingredient.getName().isEmpty()) {
             viewHolder.getNameEditField().setText(ingredient.getName());
         }
-        if(ingredient.getQuantity() != 0) {
-            String result = "1";
-            float quantity = ingredient.getQuantity();
-            if(ingredient.getQuantity() > 0) {
-                result = String.valueOf(quantity);
-                if ((quantity - (int) quantity) == 0) result = String.valueOf((int)quantity);
-            }
 
-            viewHolder.getValueEditField().setText(result);
+        //Ingredient Quantity
+        float quantity = ingredient.getQuantity();
+        String result = String.valueOf(quantity);
+        if ((quantity - (int) quantity) == 0) result = String.valueOf((int)quantity);
+        viewHolder.getValueEditField().setText(result);
+
+        //Measure
+        if(ingredient.getMeasure() != null) {
+            viewHolder.getChoiceMeasureTextView().setText((ingredient.getMeasure() instanceof Ingredient.Measure ?
+                    ((Ingredient.Measure) ingredient.getMeasure()).getPrefix():(String)ingredient.getMeasure()), false);
         }
 
+        //Elements Actions
+        //Measure CheckBox
         ArrayAdapter<String> adapter = new ArrayAdapter(MainActivity.INSTANCE.getApplicationContext(), R.layout.tag_dropdown_menu, Arrays.stream(Ingredient.Measure.values()).map(value -> value.getPrefix()).collect(Collectors.toList()));
         adapter.setDropDownViewResource(R.layout.tag_dropdown_menu);
         viewHolder.getChoiceMeasureTextView().setAdapter(adapter);
@@ -111,12 +116,16 @@ public class IngredientsCreateAdapter extends RecyclerView.Adapter<IngredientsCr
 
         viewHolder.getChoiceMeasureTextView().setOnItemClickListener((adapterView, view, position1, l) ->
                 ingredient.setMeasure(Ingredient.Measure.values()[position1]));
+        viewHolder.getChoiceMeasureTextView().setOnFocusChangeListener((view, b) ->
+        {
+            if(!b){
+                if(viewHolder.getChoiceMeasureTextView().getText().toString() != null) {
+                    ingredient.setMeasure(viewHolder.getChoiceMeasureTextView().getText().toString());
+                }
+            }
+        });
 
-        if(ingredient.getMeasure() != null) {
-            viewHolder.getChoiceMeasureTextView().setText((ingredient.getMeasure() instanceof Ingredient.Measure ?
-                    ((Ingredient.Measure) ingredient.getMeasure()).getPrefix():(String)ingredient.getMeasure()), false);
-        }
-
+        //Name
         viewHolder.getNameEditField().setOnFocusChangeListener((view, b) -> {
             if(!b){
                 if(viewHolder.getNameEditField().getText().toString() != null && !viewHolder.getNameEditField().getText().toString().isEmpty()) {
@@ -124,6 +133,8 @@ public class IngredientsCreateAdapter extends RecyclerView.Adapter<IngredientsCr
                 }
             }
         });
+
+        //Value
         viewHolder.getValueEditField().setOnFocusChangeListener((view, b) -> {
             if(!b){
                 if(viewHolder.getValueEditField().getText().toString() != null && !viewHolder.getValueEditField().getText().toString().isEmpty()) {
@@ -133,15 +144,15 @@ public class IngredientsCreateAdapter extends RecyclerView.Adapter<IngredientsCr
         });
 
         if((ingredient.getQuantity() < 0 || ingredient.getMeasure() == null) && viewHolder.getChoiceBoxMeasureLayout() != null){
-            ((LinearLayout)viewHolder.getChoiceBoxMeasureLayout().getParent()).removeView(viewHolder.getChoiceBoxMeasureLayout());
-            Resources r = MainActivity.INSTANCE.getResources();
-            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, r.getDisplayMetrics());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            params.setMargins(px, 0, px, 0);
-            viewHolder.getValueEditField().setLayoutParams(params);
+//            ((LinearLayout)viewHolder.getChoiceBoxMeasureLayout().getParent()).removeView(viewHolder.getChoiceBoxMeasureLayout());
+//            Resources r = MainActivity.INSTANCE.getResources();
+//            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, r.getDisplayMetrics());
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT
+//            );
+//            params.setMargins(px, 0, px, 0);
+//            viewHolder.getValueEditField().setLayoutParams(params);
         }
     }
 

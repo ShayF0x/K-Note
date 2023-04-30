@@ -38,24 +38,25 @@ public class IngredientConsultAdapter extends ArrayAdapter<Ingredient> {
         }
 
         Ingredient ingredient = _ingredients.get(position);
+        if(ingredient.getQuantity() == 0)return null;
 
         TextView viewTitle = (TextView) convertView.findViewById(R.id.ingredients_consult_item_name);
         viewTitle.setText(ingredient.getName());
 
         TextView viewMeasure = (TextView) convertView.findViewById(R.id.ingredients_consult_item_measure);
         StringBuilder measureBuilder = new StringBuilder();
-        if(ingredient.getQuantity() != 0) {
-            String result = "1";
-            float quantity = ingredient.getQuantity();
-            if(ingredient.getQuantity() > 0) {
-                quantity *= (float) (_quantity)/(float) (_note.getQuantity());
-                result = String.valueOf(quantity);
-                if ((quantity - (int)quantity) == 0) result = String.valueOf((int)quantity);
-            }
 
-            measureBuilder.append(result);
-            measureBuilder.append(" ");
+        String result = "1";
+        float quantity = ingredient.getQuantity();
+        if(ingredient.getQuantity() > 0) {
+            quantity *= (float) (_quantity)/(float) (_note.getQuantity());
+            result = String.valueOf(quantity);
+            if ((quantity - (int)quantity) == 0) result = String.valueOf((int)quantity);
         }
+
+        measureBuilder.append(result);
+        measureBuilder.append(" ");
+
         if(ingredient.getMeasure() != null) {
             measureBuilder.append((ingredient.getMeasure() instanceof Ingredient.Measure ?
                     ((Ingredient.Measure) ingredient.getMeasure()).getPrefix():(String)ingredient.getMeasure()));

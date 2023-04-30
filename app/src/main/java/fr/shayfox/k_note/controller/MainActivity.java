@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +58,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -72,8 +75,11 @@ import fr.shayfox.k_note.model.Note;
 import fr.shayfox.k_note.model.Tag;
 import fr.shayfox.k_note.serializer.BitmapDeserializer;
 import fr.shayfox.k_note.utils.FileUtils;
+import io.noties.markwon.Markwon;
 
 public class MainActivity extends AppCompatActivity {
+
+    public String VERSION_PATCH = "LastVersionPatch";
     public ActivityMainBinding binding;
     public AppManager mAppManager;
     public NoteAdapter mNoteAdapter;
@@ -94,15 +100,15 @@ public class MainActivity extends AppCompatActivity {
             requestPermission();
         }
 
+        mAppManager = new AppManager(getApplicationContext());
+        mNoteAdapter = new NoteAdapter(mAppManager.getNoteList(), this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         try {
             checkUpdate();
         } catch (IOException | ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        mAppManager = new AppManager(getApplicationContext());
-        mNoteAdapter = new NoteAdapter(mAppManager.getNoteList(), this);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
 
@@ -110,9 +116,62 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        PackageManager manager = getApplicationContext().getPackageManager();
+        PackageInfo info;
+        try {
+            info = manager.getPackageInfo(
+                    getApplicationContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String version = info.versionName;
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("Constantes", 0);
+
+        if(!pref.getString(VERSION_PATCH, "").equalsIgnoreCase(version)){
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(VERSION_PATCH, version);
+            editor.commit();
+
+            Response response = null;
+            try {
+                response = getResponseAll("https://api.github.com/repos/ShayF0x/K-Note/releases/tags/"+version);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            String message = "La mise à jour ne contient pas de note";
+            if(response != null){
+                if(response.get_code() == 404) {
+                    message = "Votre version n'est pas officielle";
+                }else if (response.get_code() == 452){
+                    message = "Vous n'avez pas de connection internet";
+                }else if (response.get_code() == 200){
+                    Gson gson = new Gson();
+                    message = gson.fromJson(response.get_content(), JsonObject.class).get("body").getAsString();
+                }
+            }
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this, R.style.PopupDialogTheme);
+
+            final Markwon markwon = Markwon.create(MainActivity.this);
+            final Spanned markdown = markwon.toMarkdown(message);
+
+            alertDialogBuilder.setMessage(markdown);
+
+            // set dialog message
+            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", null);
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
+
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.secondary_font));
+        }
+
         binding.addNoteButton.setOnClickListener(view ->{
             Intent intent = new Intent(MainActivity.this, CreateNoteActivity.class);
-            Note note = new Note();
+            Note note = new Note("note n°"+(mAppManager.getNoteList().size()+1));
             mAppManager.addNote(note);
             intent.putExtra("NoteUUID", note.getUUID());
             intent.putExtra("isEdit", false);
@@ -298,10 +357,15 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivity(intent);
                     return true;
+                case R.id.action_wiki:
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ShayF0x/K-Note/wiki"));
+
+                    startActivity(browserIntent);
+                    return true;
                 case R.id.action_import:
                     Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                     chooseFile.setType("*/*");
-                    chooseFile = Intent.createChooser(chooseFile, "Choisissez un fichier");
+                    chooseFile = Intent.createChooser(chooseFile, "Choisissez un fichier (.knoterecipe)");
                     startActivityForResult(chooseFile, 1);
                     return true;
             }
@@ -322,6 +386,8 @@ public class MainActivity extends AppCompatActivity {
         String version = info.versionName;
 
         String response = getResponse("https://api.github.com/repos/ShayF0x/K-Note/releases/latest");
+        if(response == null)return;
+
         Gson gson = new Gson();
         String version_latest = gson.fromJson(response, JsonObject.class).get("tag_name").getAsString();
 
@@ -393,8 +459,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private Response getResponseAll(String src) throws ExecutionException, InterruptedException {
+        AsyncTask<String, Void, Response> async = new MainActivity.getResponseTask().execute(src);
+        return async.get();
+    }
     private String getResponse(String src) throws ExecutionException, InterruptedException {
         AsyncTask<String, Void, Response> async = new getResponseTask().execute(src);
+        if(async.get().get_code() == 452){
+            Snackbar
+                    .make(binding.coordinatorLayout, "Vous êtes hors-ligne", Snackbar.LENGTH_SHORT).show();
+            return null;
+        }
         return async.get().get_content();
     }
 
@@ -414,9 +489,9 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     File file = new File(getFilePathFromURI(this, data.getData()));
 
-                    if(!getFileName(data.getData()).endsWith(".json")){
+                    if(!getFileName(data.getData()).endsWith(".knoterecipe")){
                         Snackbar snackbar = Snackbar
-                                .make(binding.coordinatorLayout, "Désolé mais votre fichier est incorrect", Snackbar.LENGTH_LONG);
+                                .make(binding.coordinatorLayout, "Désolé mais votre fichier est incorrect (ce doit être un fichier knoterecipe)", Snackbar.LENGTH_LONG);
                         snackbar.show();
                         return;
                     }
@@ -646,6 +721,8 @@ public class MainActivity extends AppCompatActivity {
     static class getResponseTask extends AsyncTask<String, Void, Response> {
 
         protected Response doInBackground(String... urls) {
+            if(!internetIsConnected())
+                return new Response(null, 452);
             StringBuilder stringBuilder = new StringBuilder();
             try {
                 for (String link:urls) {
@@ -670,6 +747,14 @@ public class MainActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             return new Response(null, 0);
+        }
+        public boolean internetIsConnected() {
+            try {
+                String command = "ping -c 1 google.com";
+                return (Runtime.getRuntime().exec(command).waitFor() == 0);
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 }
